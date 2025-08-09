@@ -1,0 +1,26 @@
+// This component renders the top navigation bar for the app.
+export default function NavBar() {
+  return (
+    <nav className="flex items-center justify-between bg-gray-100 px-6 py-4 shadow">
+      {/* App title on the left */}
+      <span className="text-xl font-bold text-gray-800">DEV@Deakin</span>
+
+      {/* Centered search bar */}
+      <input
+        type="text"
+        placeholder="Search..."
+        className="flex-1 mx-6 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+
+      {/* Buttons on the right */}
+      <div className="space-x-4">
+        <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+          Post
+        </button>
+        <button className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400">
+          Login
+        </button>
+      </div>
+    </nav>
+  );
+}
