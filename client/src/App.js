@@ -1,33 +1,20 @@
-// This file renders the main layout by composing all major components.
-import NavBar from './components/NavBar';
-import FeaturedArticlesSection from './components/FeaturedArticlesSection';
-import FeaturedTutorialsSection from './components/FeaturedTutorialsSection';
-import Footer from './components/Footer';
-import SignUp from './components/SignUp';
+// Import BrowserRouter to set up page navigation.
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// Import page components for routing. HomePage contains the existing
+// landing page layout and NewPostPage contains the post creation form.
+import HomePage from './pages/HomePage';
+import NewPostPage from './pages/NewPostPage';
 
 function App() {
   return (
-    <div className="bg-white text-black font-sans">
-      {/* Top navigation */}
-      <NavBar />
-
-      {/* Hero banner */}
-      <div className="h-64 bg-gray-300 flex items-center justify-center">
-        <span className="text-xl text-gray-700">Image</span>
-      </div>
-      
-      {/* Article section */}
-      <FeaturedArticlesSection />
-
-      {/* Tutorial section */}
-      <FeaturedTutorialsSection />
-
-      {/* Signup section */}
-      <SignUp />
-
-      {/* Site footer */}
-      <Footer />
-    </div>
+    <Router>
+      <Routes>
+        {/* Home page renders the existing landing layout */}
+        <Route path="/" element={<HomePage />} />
+        {/* New Post page displays the post creation form */}
+        <Route path="/post" element={<NewPostPage />} />
+      </Routes>
+    </Router>
   );
 }
 

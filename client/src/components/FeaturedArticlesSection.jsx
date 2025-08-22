@@ -9,7 +9,7 @@ export default function FeaturedArticlesSection() {
   ];
 
   return (
-    <section className="my-8">
+    <section className="my-8 p-4">
       <h2 className="text-2xl font-bold mb-4">Featured Articles</h2>
       <div className="flex gap-6">
         {articles.map((item, i) => (
