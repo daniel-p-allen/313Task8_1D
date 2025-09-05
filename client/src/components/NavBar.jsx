@@ -19,13 +19,18 @@ export default function NavBar() {
         {/* Use a Link for navigating to the new post page */}
         <Link
           to="/post"
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 bg-blue-100 text-black rounded hover:bg-blue-600 hover:text-white"
         >
           Post
         </Link>
-        <button className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400">
+        
+          <Link
+          to="/login"
+          className="px-4 py-2 bg-blue-100 text-black rounded hover:bg-blue-600 hover:text-white"
+        >
           Login
-        </button>
+        </Link>
+        
       </div>
     </nav>
   );

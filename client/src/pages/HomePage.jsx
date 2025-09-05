@@ -1,7 +1,7 @@
 import NavBar from '../components/NavBar';
 import FeaturedArticlesSection from '../components/FeaturedArticlesSection';
 import FeaturedTutorialsSection from '../components/FeaturedTutorialsSection';
-import SignUp from '../components/SignUp';
+import SignUpInsider from '../components/SignUpInsider';
 import Footer from '../components/Footer';
 
 
@@ -17,7 +17,7 @@ export default function HomePage() {
       </div>
       <FeaturedArticlesSection />
       <FeaturedTutorialsSection />
-      <SignUp />
+      <SignUpInsider />
       <Footer />
     </div>
   );

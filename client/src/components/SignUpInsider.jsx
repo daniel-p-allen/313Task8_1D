@@ -1,4 +1,4 @@
-export default function SignUp() {
+export default function SignUpInsider() {
   return (
     <section className="bg-gray-100 py-2 px-6 w-full overflow-hidden">
       <div className="flex items-center /* no mb here */">
