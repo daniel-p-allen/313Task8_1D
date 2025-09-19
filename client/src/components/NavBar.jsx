@@ -18,6 +18,12 @@ export default function NavBar() {
       <div className="space-x-4">
         {/* Use a Link for navigating to the new post page */}
         <Link
+          to="/find-question"
+          className="px-4 py-2 bg-blue-100 text-black rounded hover:bg-blue-600 hover:text-white"
+        >
+          Find Question
+        </Link>
+        <Link
           to="/post"
           className="px-4 py-2 bg-blue-100 text-black rounded hover:bg-blue-600 hover:text-white"
         >

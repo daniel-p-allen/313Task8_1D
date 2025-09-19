@@ -5,6 +5,9 @@ import { initializeApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
+// Regional issues stopped me from using the bucket in Australia.
+// import { getStorage } from "firebase/storage";
+
 // Firebase config pulled from .env (must start with REACT_APP_ to work in React)
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -21,3 +24,4 @@ const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 // Export Firebase services for use throughout the app
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+// export const storage = getStorage(app);

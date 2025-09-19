@@ -5,6 +5,8 @@ import HomePage from "./pages/HomePage";
 import NewPostPage from "./pages/NewPostPage";
 import Login from "./pages/Login";   
 import SignUp from "./pages/SignUp"; 
+import FindQuestion from "./pages/FindQuestion";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -13,22 +15,37 @@ function App() {
         {/* Home page renders the existing landing layout */}
         <Route path="/" element={<HomePage />} />
 
-        {/* New Post page displays the post creation form */}
-        <Route path="/post" element={<NewPostPage />} />
+        {/* New Post page (protected) */}
+        <Route
+          path="/post"
+          element={
+            <ProtectedRoute>
+              <NewPostPage />
+            </ProtectedRoute>
+          }
+        />
 
-        {/* Login here */}
+        {/* Login page */}
         <Route path="/login" element={<Login />} />
 
-        {/* Signup page here */}
+        {/* Signup page */}
         <Route path="/signup" element={<SignUp />} />
 
-        
+        {/* Find Questions page (protected) */}
+        <Route
+          path="/find-question"
+          element={
+            <ProtectedRoute>
+              <FindQuestion />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Fallback for unknown routes */}
+        <Route path="*" element={<HomePage />} />
       </Routes>
     </Router>
   );
 }
 
-
-//         {/* Sign Up page */}
-//         <Route path="/signup" element={<SignUp />} />
 export default App;
