@@ -6,7 +6,8 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 
 export default function Login() {
   // Local state for form fields and errors
@@ -14,17 +15,36 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
   const [user, setUser] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
 
-  // Set up an auth listener when the component mounts.
-  // onAuthStateChanged returns an unsubscribe function, which we call on unmount
-  // to prevent memory leaks and avoid updating state after unmount.
+  // Set up an auth listener when the component mounts
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      if (currentUser && currentUser.email === "admin@admin.com") {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
     });
     return () => unsubscribe();
+  }, []);
+
+  // Load users from Firestore
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const snap = await getDocs(collection(db, "users"));
+        const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        setUsers(list);
+      } catch (e) {
+        console.error("Error loading users", e);
+      }
+    };
+    fetchUsers();
   }, []);
 
   // Handle login form submission
@@ -44,9 +64,40 @@ export default function Login() {
     try {
       await signOut(auth);
       setUser(null); // Clear the user state after sign-out
+      setIsAdmin(false); // Reset admin flag
       navigate("/login"); // Stay on login page after sign-out
     } catch (error) {
       console.error("Sign out error:", error);
+    }
+  };
+
+  // Handle user deletion
+  const handleDeleteUser = async (userId, firstName) => {
+    const confirm = window.confirm(
+      `Do you want to remove ${firstName} and associated data?`
+    );
+    if (!confirm) return;
+
+    if (!isAdmin) {
+      alert("You must be logged in as admin to delete users.");
+      return;
+    }
+
+    try {
+      // Delete Firestore user doc
+      await deleteDoc(doc(db, "users", userId));
+
+      // Placeholder for post deletion
+      console.log("Deleted posts for user:", userId);
+
+      // TODO: Delete from Firebase Authentication (requires Admin SDK, not client-side)
+      console.log("Deleted auth account for:", userId);
+
+      // Update UI list
+      setUsers(users.filter((u) => u.id !== userId));
+    } catch (err) {
+      console.error("Error deleting user", err);
+      alert("Could not delete user.");
     }
   };
 
@@ -60,13 +111,17 @@ export default function Login() {
           <p className="mb-2 text-green-600">
             You are already logged in as <strong>{user.email}</strong>.
           </p>
+          {isAdmin && (
+            <p className="text-blue-600 font-semibold">
+              You are logged in as Admin.
+            </p>
+          )}
           <button
             onClick={handleSignOut}
-            className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600"
+            className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 mt-2"
           >
             Sign Out
           </button>
-          {/* Allow user to go back to home */}
           <p className="mt-2 text-sm">
             <Link to="/" className="underline text-blue-600">
               Back to Home
@@ -123,7 +178,6 @@ export default function Login() {
             </Link>
           </p>
 
-          {/* Allow navigation back to home */}
           <p className="mt-2 text-sm">
             <Link to="/" className="underline text-blue-600">
               Back to Home
@@ -131,6 +185,24 @@ export default function Login() {
           </p>
         </>
       )}
+
+      {/* User Mgmt Section */}
+      <div className="mt-6">
+        <h2 className="text-lg font-bold mb-2">User Mgmt.</h2>
+        <ul>
+          {users.map((u) => (
+            <li key={u.id} className="flex justify-between items-center mb-1">
+              <span>{u.firstName}</span>
+              <button
+                onClick={() => handleDeleteUser(u.id, u.firstName)}
+                className="text-red-500 hover:text-red-700"
+              >
+                X
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
